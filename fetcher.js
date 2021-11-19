@@ -7,13 +7,23 @@ const fs = require('fs');
 
 request(argv[0], (error, response, body) => {
 
+  if (error) {
+    console.log("URL is invalid " + error); //URL is invalid
+    process.exit();
+  }
+
+  if (response.statusCode !== 200) { //Status code is anything but 200
+    console.log("HTTP Status Code Error " + response.statusCode);
+    process.exit();
+  }
+
   fs.appendFile(argv[1], body, error => { //append data to a file. If the file does not exist, its created
-    if(error) {
+    if (error) {
       console.log("Error appending file: ", error);
       process.exit();
     } else {
       console.log("Downloaded and saved " + body.length + " bytes to " + argv[1]);
       process.exit();
     }
-});
+  });
 });
